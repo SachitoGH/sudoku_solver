@@ -4,8 +4,8 @@
 #include <string.h>
 
 #define N 9
-#define YEL "\033[1;33m"
-#define DEF	"\033[0m"
+#define CYAN	"\e[0;36m"
+#define RESET	"\033[0m"
 
 bool	is_legal(int sudoku_grid[N][N], int row, int col, int num)
 {
@@ -97,7 +97,7 @@ void	print_grid(int sudoku_grid[N][N], bool is_fixed[N][N])
 		for (int j = 0; j < N; j++)
 		{
 			if (is_fixed[i][j])
-				printf("%s%d %s", YEL, sudoku_grid[i][j], DEF);
+				printf("%s%d %s", CYAN, sudoku_grid[i][j], RESET);
 			else
 				printf("%d ", sudoku_grid[i][j]);
 			if ((j + 1) % block_size == 0 && j < N - 1)
