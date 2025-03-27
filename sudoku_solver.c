@@ -1,18 +1,17 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
+#include <string.h>
 
 #define N 9
+#define YEL "\033[1;33m"
+#define DEF	"\033[0m"
 
 bool	is_legal(int sudoku_grid[N][N], int row, int col, int num)
 {
 	int	block_size;
 	int	sub_row;
 	int	sub_col;
-
-	block_size = (int)sqrt(N);
-	sub_row = row - (row % block_size);
-	sub_col = col - (col % block_size);
 
 	// Check column
 	for (int i = 0; i < N; i++)
@@ -25,6 +24,9 @@ bool	is_legal(int sudoku_grid[N][N], int row, int col, int num)
 			return (false);
 
 	// Check subgrid
+	block_size = (int)sqrt(N);
+	sub_row = row - (row % block_size);
+	sub_col = col - (col % block_size);
 	for (int i = 0; i < block_size; i++)
 		for (int j = 0; j < block_size; j++)
 			if (sudoku_grid[sub_row + i][sub_col + j] == num)
@@ -53,7 +55,36 @@ bool	solve(int sudoku_grid[N][N], int row, int col)
 	return (false);
 }
 
-void	print_grid(int sudoku_grid[N][N])
+bool fill_grid(int sudoku_grid[N][N], bool is_fixed[N][N], char *str)
+{
+	int	num;
+	int	i;
+
+	i = 0;
+	for (int j = 0; j < N && str[i]; j++)
+	{
+		for (int k = 0; k < N && str[i]; k++)
+		{
+			while (str[i] && (str[i] < '0' || str[i] > '9'))
+				i++;
+			if (str[i] && str[i] >= '0' && str[i] <= '9')
+			{
+				num = str[i] - '0';
+				if (num && is_legal(sudoku_grid, j, k, num))
+				{
+					sudoku_grid[j][k] = num;
+					is_fixed[j][k] = true;	
+				}
+				else if (num)
+					return (false);
+				i++;
+			}
+		}
+	}
+	return (true);
+}
+
+void	print_grid(int sudoku_grid[N][N], bool is_fixed[N][N])
 {
 	int	block_size;
 
@@ -62,7 +93,10 @@ void	print_grid(int sudoku_grid[N][N])
 	{
 		for (int j = 0; j < N; j++)
 		{
-			printf("%d ", sudoku_grid[i][j]);
+			if (is_fixed[i][j])
+				printf("%s%d %s", YEL, sudoku_grid[i][j], DEF);
+			else
+				printf("%d ", sudoku_grid[i][j]);
 			if ((j + 1) % block_size == 0 && j < N - 1)
 				printf(" ");
 		}
@@ -72,38 +106,21 @@ void	print_grid(int sudoku_grid[N][N])
 	}
 }
 
-void fill_grid(int sudoku_grid[N][N], char *str)
-{
-	int	i;
-
-	i = 0;
-    for (int j = 0; j < N && str[i]; j++)
-    {
-        for (int k = 0; k < N && str[i]; k++)
-        {
-            while (str[i] && (str[i] < '0' || str[i] > '9'))
-                i++;
-            if (str[i] && str[i] >= '0' && str[i] <= '9')
-            {
-				sudoku_grid[j][k] = str[i] - '0';
-				i++;
-			}
-		}
-    }
-}
-
 int	main(int argc, char *argv[])
 {
-	int	sudoku_grid[N][N] = {0};
+	int		sudoku_grid[N][N] = {0};
+	bool	is_fixed[N][N] = {false};
 
-	// only for sudoku 9x9
-	if (argc == 2)
-		fill_grid(sudoku_grid, argv[1]);
+	if (argc == 2 && !fill_grid(sudoku_grid, is_fixed, argv[1]))  // only for sudoku up to 9x9
+	{
+		printf("Invalid input sudoku !\n");
+		return (1);
+	}
 	if (!solve(sudoku_grid, 0, 0))
 	{
 		printf("There is no solution for this sudoku !\n");
-		return (1);
+		return (2);
 	}
-	print_grid(sudoku_grid);
+	print_grid(sudoku_grid, is_fixed);
 	return (0);
 }
