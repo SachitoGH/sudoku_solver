@@ -84,10 +84,11 @@ void fill_grid(int sudoku_grid[N][N], char *str)
             while (str[i] && (str[i] < '0' || str[i] > '9'))
                 i++;
             if (str[i] && str[i] >= '0' && str[i] <= '9')
-                sudoku_grid[j][k] = str[i] - '0';
-			if (str[i])
+            {
+				sudoku_grid[j][k] = str[i] - '0';
 				i++;
-        }
+			}
+		}
     }
 }
 
