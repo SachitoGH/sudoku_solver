@@ -96,9 +96,8 @@ int	main(int argc, char *argv[])
 	int	sudoku_grid[N][N] = {0};
 
 	// only for sudoku 9x9
-	if (argv[1])
+	if (argc == 2)
 		fill_grid(sudoku_grid, argv[1]);
-	
 	if (!solve(sudoku_grid, 0, 0))
 	{
 		printf("There is no solution for this sudoku !\n");
