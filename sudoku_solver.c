@@ -84,6 +84,8 @@ bool fill_grid(int sudoku_grid[N][N], bool is_fixed[N][N], char *str)
 				i++;
 		}
 	}
+	if (str[i] && (str[i] == '.' || str[i] >= '0' && str[i] <= '9'))
+		return (false);
 	return (true);
 }
 
