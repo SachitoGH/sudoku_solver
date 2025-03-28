@@ -89,7 +89,7 @@ bool fill_grid(int sudoku_grid[N][N], bool is_fixed[N][N], char *str)
 	return (true);
 }
 
-void	print_grid(int sudoku_grid[N][N], bool is_fixed[N][N])
+void	print_grid(int sudoku_grid[N][N], bool (*is_fixed)[N])
 {
 	int	block_size;
 
@@ -98,7 +98,7 @@ void	print_grid(int sudoku_grid[N][N], bool is_fixed[N][N])
 	{
 		for (int j = 0; j < N; j++)
 		{
-			if (is_fixed[i][j])
+			if (is_fixed && is_fixed[i][j])
 				printf("%s%d %s", CYAN, sudoku_grid[i][j], RESET);
 			else
 				printf("%d ", sudoku_grid[i][j]);
