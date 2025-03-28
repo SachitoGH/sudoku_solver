@@ -50,7 +50,7 @@ bool	solve(int sudoku_grid[N][N], int row, int col)
 		{
 			sudoku_grid[row][col] = num;
 			if (solve(sudoku_grid, row, col + 1))
-				return (true);	
+				return (true);
 			sudoku_grid[row][col] = 0;
 		}
 	}
@@ -84,7 +84,7 @@ bool fill_grid(int sudoku_grid[N][N], bool is_fixed[N][N], char *str)
 				i++;
 		}
 	}
-	if (str[i] && (str[i] == '.' || str[i] >= '0' && str[i] <= '9'))
+	if (str[i] && (str[i] == '.' || (str[i] >= '0' && str[i] <= '9')))
 		return (false);
 	return (true);
 }
