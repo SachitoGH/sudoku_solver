@@ -4,16 +4,9 @@
 ## Installation
 
 **Build from source:**
-1. Clone the chess repository:
 ```sh
 git clone https://github.com/SachitoGH/sudoku_solver
-```
-2. Navigate to the project directory:
-```sh
 cd sudoku_solver
-```
-3. Compile the code using GCC:
-```sh
 gcc sudoku_solver.c -o sudoku_solver
 ```
 
